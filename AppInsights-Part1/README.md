@@ -1,6 +1,37 @@
+# AppInsights with React and Gatsby
+
+The is a demo application showing how to integrate Azure AppInsights into a Gastby website, using the [Gatsby eCommerce Starter](#gatsby-starter-ecommerce) template (refer below for more information on the starter kit and how to configure it).
+
+## Configuring AppInsights
+
+To configure AppInsights you'll need to [create a resource](https://docs.microsoft.com/en-gb/azure/azure-monitor/app/create-new-resource?WT.mc_id=reactappinsights-github-aapowell) in the portal and copy the [instrumentation key](https://docs.microsoft.com/en-gb/azure/azure-monitor/app/create-new-resource?WT.mc_id=reactappinsights-github-aapowell#copy-the-instrumentation-key). Once you have the instrumentation key create a `.env.development` file to setup the environment variable that Gatsby will look for:
+
+```dosini
+APPINSIGHTS_KEY=<instrumentation key here>
+```
+
+## Running in development
+
+`npm run develop`
+
+## Observing AppInsights
+
+As you navigate around you're page views will start being tracked by AppInsights and you'll be able to see them [in the logs](https://docs.microsoft.com/en-gb/azure/azure-monitor/log-query/log-query-overviewWT.mc_id=reactappinsights-github-aapowell). Here's a simple query to see page views:
+
+```
+pageViews
+| limit 50
+```
+
+## More Information
+
+You can learn more about integrating AppInsights [on my blog](https://www.aaron-powell.com/posts/2019-10-04-implementing-monitoring-in-react-using-appinsights/).
+
+---
+
 # Gatsby Starter eCommerce
 
-Gatsby starter for creating an eCommerce site using [Moltin eCommerce Api ](https://moltin.com/).
+Gatsby starter for creating an eCommerce site using [Moltin eCommerce Api](https://moltin.com/).
 
 This starter adapts an [existing](https://github.com/moltin-examples/nextjs-demo-store) NextJS eCommerce starter for [GatsbyJS](https://www.gatsbyjs.org/).
 
