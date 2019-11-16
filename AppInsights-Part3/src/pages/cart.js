@@ -6,7 +6,7 @@ import CartSummary from '../components/CartSummary'
 import CartContext from '../components/Context/CartContext'
 import Layout from '../components/Layout'
 import useCustomEvent from '../useCustomEvent'
-import {reactPlugin} from '../AppInsights'
+import {useAppInsightsContext} from '../AppInsightsContext'
 
 const Moltin = require('../../lib/moltin')
 
@@ -17,6 +17,7 @@ const Cart = ({location}) => {
   const [meta, setMeta] = useState({})
   const [cartId, setCartId] = useState({})
   const {updateCartCount} = useContext(CartContext)
+  const reactPlugin = useAppInsightsContext()
   const trackRemoveFromCart = useCustomEvent(
     reactPlugin,
     'Removed from Cart',
