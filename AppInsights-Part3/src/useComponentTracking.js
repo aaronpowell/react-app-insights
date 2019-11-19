@@ -1,7 +1,5 @@
 import {useEffect, useRef} from 'react'
 
-let tracking = new Map()
-
 function getEngagementTimeSeconds(t) {
   return (
     (Date.now() -
@@ -12,18 +10,8 @@ function getEngagementTimeSeconds(t) {
   )
 }
 
-const uuidv4 = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, match => {
-    const random = (Math.random() * 16) | 0
-    const value = match == 'x' ? random : (random & 0x3) | 0x8
-    return value.toString(16)
-  })
-}
-
 const useComponentTracking = (reactPlugin, componentName) => {
-  const guid = uuidv4()
-  const trackingId = `${componentName}:${guid}`
-  tracking.set(trackingId, {
+  const tracking = useRef({
     hookTimestamp: Date.now(),
     firstActiveTimestamp: 0,
     totalIdleTime: 0,
@@ -32,11 +20,10 @@ const useComponentTracking = (reactPlugin, componentName) => {
     idleCount: 0,
     idleTimeout: 5000,
   })
-
   const savedCallback = useRef()
 
   const callback = () => {
-    let trackedData = tracking.get(trackingId)
+    let trackedData = tracking.current
     if (
       trackedData.lastActiveTimestamp > 0 &&
       trackedData.idleStartTimestamp === 0 &&
@@ -56,8 +43,7 @@ const useComponentTracking = (reactPlugin, componentName) => {
     return () => {
       clearInterval(id)
 
-      let trackedData = tracking.get(trackingId)
-      tracking.delete(trackingId)
+      let trackedData = tracking.current
       if (trackedData.hookTimestamp === 0) {
         throw new Error(
           'useAppInsights:unload hook: hookTimestamp is not initialized.',
@@ -81,7 +67,7 @@ const useComponentTracking = (reactPlugin, componentName) => {
   }, [])
 
   const trackActivity = () => {
-    let t = tracking.get(trackingId)
+    let t = tracking.current
     if (t.firstActiveTimestamp === 0) {
       t.firstActiveTimestamp = Date.now()
       t.lastActiveTimestamp = t.firstActiveTimestamp
