@@ -15,7 +15,7 @@ export default function useCustomEvent(
       return
     }
     reactPlugin.trackEvent({name: eventName}, data)
-  }, [data, eventName])
+  }, [reactPlugin, data, eventName])
 
   return setData
 }
